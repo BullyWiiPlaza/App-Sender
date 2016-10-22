@@ -7,7 +7,7 @@ This application let's you send a homebrew app from your computer to your Wii or
 ![alt tag](http://fs5.directupload.net/images/161022/g5n698ux.png)
 
 ## Where do I download the application?
-[Here](blob/master/App%20Sender.jar?raw=true).
+[Here](App%20Sender.jar?raw=true).
 
 ## How do I start this application?
 [You need to have Java installed](https://www.youtube.com/watch?v=t58ZrfkI2PM).
