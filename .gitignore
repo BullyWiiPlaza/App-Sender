@@ -1,0 +1,5 @@
+# No compiled classes
+/target
+
+# No configuration file
+/config.properties
