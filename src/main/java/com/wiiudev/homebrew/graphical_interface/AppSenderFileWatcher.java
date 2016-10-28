@@ -17,7 +17,7 @@ public class AppSenderFileWatcher extends FileWatcher
 		SwingUtilities.invokeLater(() ->
 		{
 			AppSenderGUI appSenderGUI = AppSenderGUI.getInstance();
-			appSenderGUI.sendApp();
+			appSenderGUI.sendApp(false);
 		});
 	}
 }

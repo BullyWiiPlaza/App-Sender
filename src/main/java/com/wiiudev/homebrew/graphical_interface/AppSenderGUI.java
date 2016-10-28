@@ -28,6 +28,7 @@ public class AppSenderGUI extends JFrame
 	private PersistentSettings persistentSettings;
 	private boolean sendingApp;
 	private FileWatcher fileWatcher;
+	private String sendAppButtonText;
 
 	private static AppSenderGUI instance;
 
@@ -37,7 +38,8 @@ public class AppSenderGUI extends JFrame
 		addAppFileDocumentListener();
 		addIPAddressValidation();
 		addBrowseAppFileButtonListener();
-		sendAppButton.addActionListener(actionEvent -> sendApp());
+		sendAppButton.addActionListener(actionEvent -> sendApp(true));
+		sendAppButtonText = sendAppButton.getText();
 		addCreditsButtonListener();
 		addInformationButtonListener();
 		automaticallySendCheckBox.addItemListener(itemEvent -> considerRunningAppFileWatcher());
@@ -75,7 +77,7 @@ public class AppSenderGUI extends JFrame
 		}
 
 		String automaticallySend = persistentSettings.get("AUTOMATICALLY_SEND");
-		if(automaticallySend != null)
+		if (automaticallySend != null)
 		{
 			automaticallySendCheckBox.setSelected(Boolean.parseBoolean(automaticallySend));
 		}
@@ -186,9 +188,8 @@ public class AppSenderGUI extends JFrame
 		pack();
 	}
 
-	void sendApp()
+	void sendApp(boolean displayErrorMessage)
 	{
-		String sendAppButtonText = sendAppButton.getText();
 		sendAppButton.setText("Sending...");
 		sendingApp = true;
 		setSendAppButtonAvailability();
@@ -206,6 +207,14 @@ public class AppSenderGUI extends JFrame
 				} catch (Exception exception)
 				{
 					exception.printStackTrace();
+
+					if (displayErrorMessage)
+					{
+						JOptionPane.showMessageDialog(AppSenderGUI.this,
+								"Make sure you're in the Homebrew Channel or Homebrew Launcher when sending\nand that you can connect to the Wii U via the local network.",
+								"Connection Failed",
+								JOptionPane.ERROR_MESSAGE);
+					}
 				}
 
 				return null;
