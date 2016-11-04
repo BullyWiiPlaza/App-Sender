@@ -120,11 +120,17 @@ public class AppSenderGUI extends JFrame
 
 	private void startAppFileWatcher()
 	{
-		stopAppFileWatcher();
+		try
+		{
+			stopAppFileWatcher();
 
-		String appFilePath = appFilePathField.getText();
-		fileWatcher = new AppSenderFileWatcher(appFilePath);
-		fileWatcher.startWatching();
+			String appFilePath = appFilePathField.getText();
+			fileWatcher = new AppSenderFileWatcher(appFilePath);
+			fileWatcher.startWatching();
+		} catch (Exception exception)
+		{
+			exception.printStackTrace();
+		}
 	}
 
 	private void stopAppFileWatcher()
