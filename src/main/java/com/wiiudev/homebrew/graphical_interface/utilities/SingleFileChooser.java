@@ -1,5 +1,7 @@
 package com.wiiudev.homebrew.graphical_interface.utilities;
 
+import lombok.val;
+
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.io.File;
@@ -13,16 +15,16 @@ public class SingleFileChooser extends JFileChooser
 	{
 		this.pathTextComponent = pathTextComponent;
 
-		String currentFilePath = pathTextComponent.getText();
-		File currentFile = new File(currentFilePath);
+		val currentFilePath = pathTextComponent.getText();
+		val currentFile = new File(currentFilePath);
 
 		if (Files.isRegularFile(currentFile.toPath()))
 		{
 			setCurrentDirectory(currentFile);
 		} else
 		{
-			String workingDirectory = System.getProperty("user.dir");
-			File workingDirectoryFile = new File(workingDirectory);
+			val workingDirectory = System.getProperty("user.dir");
+			val workingDirectoryFile = new File(workingDirectory);
 			setCurrentDirectory(workingDirectoryFile);
 		}
 
@@ -31,11 +33,10 @@ public class SingleFileChooser extends JFileChooser
 
 	public void allowFileSelection(JRootPane rootPane)
 	{
-		int selectedAnswer = showOpenDialog(rootPane);
-
+		val selectedAnswer = showOpenDialog(rootPane);
 		if (selectedAnswer == JFileChooser.APPROVE_OPTION)
 		{
-			String selectedFile = getSelectedFile().getAbsolutePath();
+			val selectedFile = getSelectedFile().getAbsolutePath();
 			pathTextComponent.setText(selectedFile);
 		}
 	}

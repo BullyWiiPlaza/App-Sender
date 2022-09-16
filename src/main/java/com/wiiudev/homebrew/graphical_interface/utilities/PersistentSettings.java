@@ -1,5 +1,7 @@
 package com.wiiudev.homebrew.graphical_interface.utilities;
 
+import lombok.val;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -24,13 +26,13 @@ public class PersistentSettings
 					properties.load(propertiesReader);
 				}
 			}
-		} catch (IOException exception)
+		} catch (final IOException exception)
 		{
 			exception.printStackTrace();
 		}
 	}
 
-	public void put(String key, String value)
+	public void put(final String key, final String value)
 	{
 		properties.setProperty(key, value);
 	}
@@ -39,17 +41,17 @@ public class PersistentSettings
 	{
 		try
 		{
-			try (OutputStream propertiesWriter = Files.newOutputStream(Paths.get(propertiesFileName)))
+			try (val propertiesWriter = Files.newOutputStream(Paths.get(propertiesFileName)))
 			{
 				properties.store(propertiesWriter, null);
 			}
-		} catch (IOException exception)
+		} catch (final IOException exception)
 		{
 			exception.printStackTrace();
 		}
 	}
 
-	public String get(String key)
+	public String get(final String key)
 	{
 		return (String) properties.get(key);
 	}

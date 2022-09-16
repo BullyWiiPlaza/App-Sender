@@ -1,11 +1,12 @@
-import com.wiiudev.homebrew.graphical_interface.utilities.IPAddressValidator;
 import com.wiiudev.homebrew.graphical_interface.AppSenderGUI;
 import com.wiiudev.homebrew.sending.AppTransmission;
+import lombok.val;
 
 import javax.swing.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import static com.wiiudev.homebrew.graphical_interface.utilities.IPAddressValidator.validateIPv4Address;
 
 public class AppSenderClient
 {
@@ -26,15 +27,15 @@ public class AppSenderClient
 
 		SwingUtilities.invokeLater(() ->
 		{
-			AppSenderGUI appSenderGUI = AppSenderGUI.getInstance();
+			val appSenderGUI = AppSenderGUI.getInstance();
 			appSenderGUI.setVisible(true);
 		});
 	}
 
-	private static void useCommandLine(String[] consoleArguments) throws Exception
+	private static void useCommandLine(final String[] consoleArguments) throws Exception
 	{
-		String ipAddress = consoleArguments[1];
-		boolean isValidIPAddress = IPAddressValidator.validateIPv4Address(ipAddress);
+		val ipAddress = consoleArguments[1];
+		val isValidIPAddress = validateIPv4Address(ipAddress);
 
 		if (!isValidIPAddress)
 		{
@@ -42,9 +43,9 @@ public class AppSenderClient
 			System.exit(1);
 		}
 
-		String sourceFile = consoleArguments[0];
-		Path sourceFilePath = Paths.get(sourceFile);
-		boolean isValidSourceFile = Files.isRegularFile(sourceFilePath);
+		val sourceFile = consoleArguments[0];
+		val sourceFilePath = Paths.get(sourceFile);
+		val isValidSourceFile = Files.isRegularFile(sourceFilePath);
 
 		if (!isValidSourceFile)
 		{

@@ -1,16 +1,13 @@
 package com.wiiudev.homebrew.sending;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import lombok.val;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.zip.DeflaterOutputStream;
+
+import static java.nio.file.Files.createTempFile;
 
 public class AppBytesCompressor
 {
@@ -19,17 +16,16 @@ public class AppBytesCompressor
 	 *
 	 * @param rawFile A raw file from the file system
 	 */
-	public static File compress(File rawFile) throws IOException
+	public static Path compress(final Path rawFile) throws IOException
 	{
-		String compressedFilePath = FileNameUtilities.getRandomFilePath();
-		File compressed = new File(compressedFilePath);
+		// https://stackoverflow.com/a/9806694/3764804
+		val compressedFile = createTempFile("Compressed-ELF", ".zz");
 
-		try (OutputStream compressedWriter = new DeflaterOutputStream(new FileOutputStream(compressed)))
+		try (val compressedWriter = new DeflaterOutputStream(Files.newOutputStream(compressedFile)))
 		{
-			Files.copy(rawFile.toPath(), compressedWriter);
-			compressedWriter.flush();
+			Files.copy(rawFile, compressedWriter);
 		}
 
-		return compressed;
+		return compressedFile;
 	}
 }

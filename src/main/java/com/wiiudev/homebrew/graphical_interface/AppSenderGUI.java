@@ -5,13 +5,13 @@ import com.wiiudev.homebrew.graphical_interface.utilities.IPAddressValidator;
 import com.wiiudev.homebrew.graphical_interface.utilities.PersistentSettings;
 import com.wiiudev.homebrew.graphical_interface.utilities.SingleFileChooser;
 import com.wiiudev.homebrew.sending.AppTransmission;
+import lombok.val;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class AppSenderGUI extends JFrame
@@ -51,7 +51,8 @@ public class AppSenderGUI extends JFrame
 
 	private void addSettingsBackupShutdownHook()
 	{
-		Runtime.getRuntime().addShutdownHook(new Thread(() ->
+		val runtime = Runtime.getRuntime();
+		runtime.addShutdownHook(new Thread(() ->
 		{
 			persistentSettings.put("IP_ADDRESS", ipAddressField.getText());
 			persistentSettings.put("APP_FILE_PATH", appFilePathField.getText());
@@ -64,19 +65,19 @@ public class AppSenderGUI extends JFrame
 	{
 		persistentSettings = new PersistentSettings();
 
-		String ipAddress = persistentSettings.get("IP_ADDRESS");
+		val ipAddress = persistentSettings.get("IP_ADDRESS");
 		if (ipAddress != null)
 		{
 			ipAddressField.setText(ipAddress);
 		}
 
-		String appFilePath = persistentSettings.get("APP_FILE_PATH");
+		val appFilePath = persistentSettings.get("APP_FILE_PATH");
 		if (appFilePath != null)
 		{
 			appFilePathField.setText(appFilePath);
 		}
 
-		String automaticallySend = persistentSettings.get("AUTOMATICALLY_SEND");
+		val automaticallySend = persistentSettings.get("AUTOMATICALLY_SEND");
 		if (automaticallySend != null)
 		{
 			automaticallySendCheckBox.setSelected(Boolean.parseBoolean(automaticallySend));
@@ -85,7 +86,8 @@ public class AppSenderGUI extends JFrame
 
 	private void addAppFileDocumentListener()
 	{
-		appFilePathField.getDocument().addDocumentListener(new DocumentListener()
+		val document = appFilePathField.getDocument();
+		document.addDocumentListener(new DocumentListener()
 		{
 			@Override
 			public void insertUpdate(DocumentEvent documentEvent)
@@ -124,10 +126,10 @@ public class AppSenderGUI extends JFrame
 		{
 			stopAppFileWatcher();
 
-			String appFilePath = appFilePathField.getText();
+			val appFilePath = appFilePathField.getText();
 			fileWatcher = new AppSenderFileWatcher(appFilePath);
 			fileWatcher.startWatching();
-		} catch (Exception exception)
+		} catch (final Exception exception)
 		{
 			exception.printStackTrace();
 		}
@@ -143,7 +145,7 @@ public class AppSenderGUI extends JFrame
 
 	private void startAppFilePathValidationAsynchronously()
 	{
-		Thread appFilePathValidator = new Thread(() ->
+		val appFilePathValidator = new Thread(() ->
 		{
 			while (true)
 			{
@@ -178,11 +180,9 @@ public class AppSenderGUI extends JFrame
 	{
 		informationButton.addActionListener(actionEvent ->
 				JOptionPane.showMessageDialog(rootPane,
-						"This application let's you send apps from your computer to your Wii or Wii U and automatically start them!" +
-								"\nYou need to be in the Homebrew Channel or Homebrew Launcher respectively for this to work.",
-						informationButton.getText(),
-						JOptionPane.INFORMATION_MESSAGE,
-						null));
+						"This application let's you send apps from your computer to your Wii or Wii U and automatically start them.\n" +
+								"You need to be in the Homebrew Channel or Homebrew Launcher respectively for this to work.",
+						informationButton.getText(), JOptionPane.INFORMATION_MESSAGE, null));
 	}
 
 	private void setFrameProperties()
@@ -200,8 +200,8 @@ public class AppSenderGUI extends JFrame
 		sendAppButton.setText("Sending...");
 		sendingApp = true;
 		setSendAppButtonAvailability();
-		String ipAddress = ipAddressField.getText();
-		String appFilePath = appFilePathField.getText();
+		val ipAddress = ipAddressField.getText();
+		val appFilePath = appFilePathField.getText();
 
 		new SwingWorker<String, String>()
 		{
@@ -211,14 +211,15 @@ public class AppSenderGUI extends JFrame
 				try
 				{
 					AppTransmission.send(appFilePath, ipAddress);
-				} catch (Exception exception)
+				} catch (final Exception exception)
 				{
 					exception.printStackTrace();
 
 					if (displayErrorMessage)
 					{
 						JOptionPane.showMessageDialog(AppSenderGUI.this,
-								"Make sure you're in the Homebrew Channel or Homebrew Launcher when sending\nand that you can connect to the Wii U via the local network.",
+								"Make sure you're in the Homebrew Channel or Homebrew Launcher when sending\n" +
+										"and that you can connect to the Wii U via the local network.",
 								"Connection Failed",
 								JOptionPane.ERROR_MESSAGE);
 					}
@@ -239,7 +240,7 @@ public class AppSenderGUI extends JFrame
 
 	private void setSendAppButtonAvailability()
 	{
-		boolean canSend = isAppFilePathValid()
+		val canSend = isAppFilePathValid()
 				&& isEnteredIPAddressValid()
 				&& !sendingApp;
 		sendAppButton.setEnabled(canSend);
@@ -250,29 +251,30 @@ public class AppSenderGUI extends JFrame
 	{
 		browseAppFileButton.addActionListener(actionEvent ->
 		{
-			SingleFileChooser singleFileChooser = new SingleFileChooser(appFilePathField);
+			val singleFileChooser = new SingleFileChooser(appFilePathField);
 			singleFileChooser.allowFileSelection(getRootPane());
 		});
 	}
 
 	private void validateAppFilePath()
 	{
-		boolean exists = isAppFilePathValid();
+		val exists = isAppFilePathValid();
 		appFilePathField.setBackground(exists ? Color.GREEN : Color.RED);
 		setSendAppButtonAvailability();
 	}
 
 	private boolean isAppFilePathValid()
 	{
-		String appFilePath = appFilePathField.getText();
-		Path filePath = Paths.get(appFilePath);
+		val appFilePath = appFilePathField.getText();
+		val filePath = Paths.get(appFilePath);
 
 		return Files.isRegularFile(filePath);
 	}
 
 	private void addIPAddressValidation()
 	{
-		ipAddressField.getDocument().addDocumentListener(new DocumentListener()
+		val document = ipAddressField.getDocument();
+		document.addDocumentListener(new DocumentListener()
 		{
 			@Override
 			public void insertUpdate(DocumentEvent documentEvent)
@@ -298,14 +300,14 @@ public class AppSenderGUI extends JFrame
 
 	private void validateIPAddressField()
 	{
-		boolean isValid = isEnteredIPAddressValid();
+		val isValid = isEnteredIPAddressValid();
 		ipAddressField.setBackground(isValid ? Color.GREEN : Color.RED);
 		setSendAppButtonAvailability();
 	}
 
 	private boolean isEnteredIPAddressValid()
 	{
-		String ipAddress = ipAddressField.getText();
+		val ipAddress = ipAddressField.getText();
 		return IPAddressValidator.validateIPv4Address(ipAddress);
 	}
 

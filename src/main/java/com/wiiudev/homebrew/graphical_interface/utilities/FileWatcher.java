@@ -1,9 +1,10 @@
 package com.wiiudev.homebrew.graphical_interface.utilities;
 
+import lombok.val;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
-import java.nio.file.WatchEvent.Kind;
 
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
@@ -15,9 +16,8 @@ public abstract class FileWatcher
 
 	public FileWatcher(String watchFile)
 	{
-		Path filePath = Paths.get(watchFile);
-
-		boolean isRegularFile = Files.isRegularFile(filePath);
+		val filePath = Paths.get(watchFile);
+		val isRegularFile = Files.isRegularFile(filePath);
 
 		if (!isRegularFile)
 		{
@@ -34,12 +34,12 @@ public abstract class FileWatcher
 
 	public void startWatching()
 	{
-		Thread watcherThread = new Thread(() ->
+		val watcherThread = new Thread(() ->
 		{
 			try
 			{
 				// We obtain the file system of the Path
-				FileSystem fileSystem = folderPath.getFileSystem();
+				val fileSystem = folderPath.getFileSystem();
 				service = fileSystem.newWatchService();
 
 				// We watch for modification events
@@ -49,16 +49,16 @@ public abstract class FileWatcher
 				while (true)
 				{
 					// Wait for the next event
-					WatchKey watchKey = service.take();
+					val watchKey = service.take();
 
-					for (WatchEvent<?> watchEvent : watchKey.pollEvents())
+					for (val watchEvent : watchKey.pollEvents())
 					{
 						// Get the type of the event
-						Kind<?> kind = watchEvent.kind();
+						val kind = watchEvent.kind();
 
 						if (kind == ENTRY_MODIFY)
 						{
-							Path watchEventPath = (Path) watchEvent.context();
+							val watchEventPath = (Path) watchEvent.context();
 
 							// Call this if the right file is involved
 							if (watchEventPath.toString().equals(watchFile))
@@ -74,10 +74,10 @@ public abstract class FileWatcher
 						break;
 					}
 				}
-			} catch (ClosedWatchServiceException ignored)
+			} catch (final ClosedWatchServiceException ignored)
 			{
 				// This happens when the watch service has been closed so ignore
-			} catch (Exception exception)
+			} catch (final Exception exception)
 			{
 				exception.printStackTrace();
 			}

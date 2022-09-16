@@ -1,6 +1,7 @@
 package com.wiiudev.homebrew.graphical_interface;
 
 import com.wiiudev.homebrew.graphical_interface.utilities.FileWatcher;
+import lombok.val;
 
 import javax.swing.*;
 
@@ -16,7 +17,7 @@ public class AppSenderFileWatcher extends FileWatcher
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			AppSenderGUI appSenderGUI = AppSenderGUI.getInstance();
+			val appSenderGUI = AppSenderGUI.getInstance();
 			appSenderGUI.sendApp(false);
 		});
 	}
