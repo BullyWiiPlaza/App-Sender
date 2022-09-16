@@ -7,7 +7,7 @@ import java.nio.file.Files;
 
 public class SingleFileChooser extends JFileChooser
 {
-	private JTextComponent pathTextComponent;
+	private final JTextComponent pathTextComponent;
 
 	public SingleFileChooser(JTextComponent pathTextComponent)
 	{

@@ -1,15 +1,16 @@
 package com.wiiudev.homebrew.sending;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.Socket;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class AppTransmission
 {
-	private Socket clientSocket;
-	private DataOutputStream dataTransmitter;
+	private final Socket clientSocket;
+	private final DataOutputStream dataTransmitter;
 	private static final int PORT = 4299;
 
 	private AppTransmission(String ipAddress) throws IOException

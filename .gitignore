@@ -3,3 +3,8 @@
 
 # No configuration file
 /config.properties
+
+# No IntelliJ IDEA folder
+/.idea
+
+/*.iml

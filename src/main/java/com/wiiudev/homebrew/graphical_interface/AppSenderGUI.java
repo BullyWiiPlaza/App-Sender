@@ -28,7 +28,7 @@ public class AppSenderGUI extends JFrame
 	private PersistentSettings persistentSettings;
 	private boolean sendingApp;
 	private FileWatcher fileWatcher;
-	private String sendAppButtonText;
+	private final String sendAppButtonText;
 
 	private static AppSenderGUI instance;
 
@@ -151,6 +151,7 @@ public class AppSenderGUI extends JFrame
 
 				try
 				{
+					//noinspection BusyWait
 					Thread.sleep(50);
 				} catch (InterruptedException exception)
 				{
@@ -205,7 +206,7 @@ public class AppSenderGUI extends JFrame
 		new SwingWorker<String, String>()
 		{
 			@Override
-			protected String doInBackground() throws Exception
+			protected String doInBackground()
 			{
 				try
 				{

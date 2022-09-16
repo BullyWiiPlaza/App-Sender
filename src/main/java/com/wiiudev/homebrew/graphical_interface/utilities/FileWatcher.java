@@ -9,8 +9,8 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 public abstract class FileWatcher
 {
-	private Path folderPath;
-	private String watchFile;
+	private final Path folderPath;
+	private final String watchFile;
 	private WatchService service;
 
 	public FileWatcher(String watchFile)

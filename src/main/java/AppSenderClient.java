@@ -20,7 +20,7 @@ public class AppSenderClient
 		}
 	}
 
-	private static void startGUI() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException
+	private static void startGUI() throws Exception
 	{
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
